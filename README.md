@@ -1,0 +1,3 @@
+# SourceManager
+### Going to write a proper README at some point... eventually...
+Source engine development environment helper, with plans for a built-in VTFEdit alternative. Does not support VPK archives, so just do that whenever your mod is finished.
