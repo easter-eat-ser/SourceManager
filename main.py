@@ -13,6 +13,18 @@ root.wm_overrideredirect(True) # I'll add a custom titlebar, eventually...
 
 image_close = PhotoImage(file = "./img/cls.png")
 image_mini = PhotoImage(file = "./img/min.png")
+image_height = PhotoImage(file = "./img/height.png")
+
+ico_hammer = PhotoImage(file = "./img/i_hammer.png")
+ico_model = PhotoImage(file = "./img/i_model.png")
+ico_face = PhotoImage(file = "./img/i_face.png")
+ico_itemtest = PhotoImage(file = "./img/i_itemtest.png")
+ico_docu = PhotoImage(file = "./img/i_docu.png")
+ico_createmod = PhotoImage(file = "./img/i_createmod.png")
+ico_refresh = PhotoImage(file = "./img/i_refresh.png")
+ico_resetedit = PhotoImage(file = "./img/i_resetedit.png")
+ico_links = PhotoImage(file = "./img/i_links.png")
+
 
 def get_pos(event):
     global xwin
@@ -38,10 +50,17 @@ pal_lite = "#4b5743"
 pal_dark = "#3c4534"
 pal_text = "white"
 pal_stxt = "#c4b74e"
+pal_hovr = "#1f221b"
+pal_hovy = "#95892d"
+
+pal_tes1 = "red"
+pal_tes2 = "green"
+pal_tes3 = "blue"
+pal_tes4 = "yellow"
 
 # Here we go.
 
-root.geometry('350x500+350+200')
+root.geometry('350x476+350+200')
 root.configure(bg=pal_lite, relief=RAISED, bd=1)
 
 # Base layout
@@ -51,13 +70,20 @@ titlebar.bind('<Button-1>', get_pos)
 application = Frame(root, bg=pal_dark, relief=SUNKEN, bd=1)
 
 # Titlebar definitions
-titlebar_label = Label(titlebar, text="     Source SDK", bg=pal_lite, fg=pal_text, font=("Tahoma", 10), justify="left")
+titlebar_label = Label(titlebar, text="     Source SDK Linux", bg=pal_lite, fg=pal_text, font=("Tahoma", 10), justify="left")
 # titlebar_close_fm = Frame(titlebar, width=18, height=18, relief=RAISED, bd=1, bg=pal_lite)
-titlebar_mini = Button(titlebar, width = 14, height = 14, image = image_mini, bd=1, highlightthickness=0, takefocus=False, relief=RAISED, bg=pal_lite)
-titlebar_close = Button(titlebar, width = 14, height = 14, image = image_close, bd=1, highlightthickness=0, takefocus=False, relief=RAISED, bg=pal_lite)
+titlebar_mini = Button(titlebar, width = 14, height = 14, image = image_mini, bd=1, highlightthickness=0, takefocus=False, relief=RAISED, bg=pal_lite, activebackground=pal_lite)
+titlebar_close = Button(titlebar, width = 14, height = 14, image = image_close, bd=1, highlightthickness=0, takefocus=False, relief=RAISED, bg=pal_lite, activebackground=pal_lite)
 
 # Application definitions
-application_m_apps = Label(application, text="ᴀᴘᴘʟɪᴄᴀᴛɪᴏɴs", bg=pal_dark, fg=pal_stxt, font=("Tahoma", 10), justify="left")
+application_m_apps = Label(application, text="ᴀᴘᴘʟɪᴄᴀᴛɪᴏɴs", bg=pal_dark, fg=pal_stxt, font=("Tahoma", 10), anchor="w")
+
+application_s_apps = Frame(application, bg = pal_hovr)
+
+app_hammer = Button(application, text="Hammer Editor", image=ico_hammer, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
+app_model = Button(application, text="Model Viewer", image=ico_model, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
+
+# ---------------------------------------------
 
 titlebar.grid(row=0, column=0, sticky=EW, padx=7, pady=5, ipadx=0)
 application.grid(row=1, column=0, sticky=NSEW, padx=7, pady=0, ipadx=5, ipady=5)
@@ -71,7 +97,14 @@ titlebar_label.grid(column=0, row=0, sticky=W)
 titlebar_mini.grid(column=1, row=0, sticky=E, pady=0, padx=1)
 titlebar_close.grid(column=2, row=0, sticky=E, pady=0, padx=1)
 
-application_m_apps.grid(column=2, row=0, sticky="w")
+# App packing below
+
+application_m_apps.pack(fill=BOTH, padx=24, pady=2)
+
+application_s_apps.pack(fill=BOTH, padx=8)
+
+app_hammer.pack(fill=BOTH, padx=0, pady=0, ipadx=0, ipady=0)
+app_model.pack(fill=BOTH, padx=0, pady=0, ipadx=0, ipady=0)
 
 # The end.
 
