@@ -1,7 +1,21 @@
+#!/usr/bin/env python
+
 from tkinter import *
 import os
 import subprocess
 print("go")
+
+pal_lite = "#4b5743"
+pal_dark = "#3c4534"
+pal_text = "white"
+pal_stxt = "#c4b74e"
+pal_hovr = "#1f221b"
+pal_hovy = "#95892d"
+
+pal_tes1 = "red"
+pal_tes2 = "green"
+pal_tes3 = "blue"
+pal_tes4 = "yellow"
 
 class Scrollable(Frame):
     """
@@ -12,18 +26,18 @@ class Scrollable(Frame):
 
     def __init__(self, frame, width=16):
 
-        scrollbar = Scrollbar(frame, width=width)
+        scrollbar = Scrollbar(frame, width=width, troughcolor=pal_lite, bg=pal_lite, activebackground=pal_lite)
         scrollbar.pack(side=RIGHT, fill=Y, expand=False)
 
-        self.canvas = Canvas(frame, yscrollcommand=scrollbar.set)
-        self.canvas.pack(side=LEFT, fill=BOTH, expand=True)
+        self.canvas = Canvas(frame, yscrollcommand=scrollbar.set, relief=SUNKEN, bd=0, bg="red", highlightthickness=0)
+        self.canvas.pack(side=LEFT, fill=BOTH, expand=True, pady=0, ipady=0)
 
         scrollbar.config(command=self.canvas.yview)
 
         self.canvas.bind('<Configure>', self.__fill_canvas)
 
         # base class initialization
-        Frame.__init__(self, frame)
+        Frame.__init__(self, frame, bg=pal_dark, pady=0)
 
         # assign this obj (the inner frame) to the windows item of the canvas
         self.windows_item = self.canvas.create_window(0,0, window=self, anchor=NW)
@@ -39,7 +53,10 @@ class Scrollable(Frame):
         "Update the canvas and the scrollregion"
 
         self.update_idletasks()
+        scroll_scrollregion = list(self.canvas.bbox(self.windows_item))
+        scroll_scrollregion[3] = scroll_scrollregion[3] + 100
         self.canvas.config(scrollregion=self.canvas.bbox(self.windows_item))
+        print(self.canvas.bbox(self.windows_item))
 
 root = Tk()
 # root.wm_attributes('-type', 'splash')
@@ -82,17 +99,7 @@ def center_window(window):
     y = (screen_height - height) // 2
     window.geometry(f"{width}x{height}+{x}+{y}")
 
-pal_lite = "#4b5743"
-pal_dark = "#3c4534"
-pal_text = "white"
-pal_stxt = "#c4b74e"
-pal_hovr = "#1f221b"
-pal_hovy = "#95892d"
 
-pal_tes1 = "red"
-pal_tes2 = "green"
-pal_tes3 = "blue"
-pal_tes4 = "yellow"
 
 # Here we go.
 
@@ -105,31 +112,32 @@ titlebar.bind('<B1-Motion>', move_window)
 titlebar.bind('<Button-1>', get_pos)
 
 application = Frame(root, bg=pal_dark, relief=SUNKEN, bd=1)
+application_s = Scrollable(application)
 
 # Titlebar definitions
 titlebar_label = Label(titlebar, text="     Source SDK Launcher", bg=pal_lite, fg=pal_text, font=("Tahoma", 10), justify="left")
 # titlebar_close_fm = Frame(titlebar, width=18, height=18, relief=RAISED, bd=1, bg=pal_lite)
 titlebar_mini = Button(titlebar, width = 14, height = 14, image = image_mini, bd=1, highlightthickness=0, takefocus=False, relief=RAISED, bg=pal_lite, activebackground=pal_lite)
-titlebar_close = Button(titlebar, width = 14, height = 14, image = image_close, bd=1, highlightthickness=0, takefocus=False, relief=RAISED, bg=pal_lite, activebackground=pal_lite)
+titlebar_close = Button(titlebar, width = 14, height = 14, image = image_close, bd=1, highlightthickness=0, takefocus=False, relief=RAISED, bg=pal_lite, activebackground=pal_lite, command=root.destroy)
 
 # Application definitions
-application_m_apps = Label(application, text="ᴀᴘᴘʟɪᴄᴀᴛɪᴏɴs", bg=pal_dark, fg=pal_stxt, font=("Tahoma", 10), anchor="w")
+application_m_apps = Label(application_s, text="ᴀᴘᴘʟɪᴄᴀᴛɪᴏɴs", bg=pal_dark, fg=pal_stxt, font=("Tahoma", 10), anchor="w")
 
-application_s_apps = Frame(application, bg = pal_hovr)
+application_s_apps = Frame(application_s, bg = pal_hovr)
 
-app_hammer = Button(application, text="Hammer Editor", image=ico_hammer, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
-app_model = Button(application, text="Model Viewer", image=ico_model, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
-app_facer = Button(application, text="Face Poser", image=ico_face, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
+app_hammer = Button(application_s, text="Hammer Editor", image=ico_hammer, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
+app_model = Button(application_s, text="Model Viewer", image=ico_model, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
+app_facer = Button(application_s, text="Face Poser", image=ico_face, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
 
-application_m_mods = Label(application, text="sᴏᴜʀᴄᴇᴍᴏᴅs", bg=pal_dark, fg=pal_stxt, font=("Tahoma", 10), anchor="w")
+application_m_mods = Label(application_s, text="sᴏᴜʀᴄᴇᴍᴏᴅs", bg=pal_dark, fg=pal_stxt, font=("Tahoma", 10), anchor="w")
 
-application_s_mods = Frame(application, bg = pal_hovr)
+application_s_mods = Frame(application_s, bg = pal_hovr)
 
-prog_sourcemods = os.listdir(os.environ['HOME'] + "/.steam/debian-installation/steamapps/sourcemods/")
+prog_sourcemods = os.listdir(os.environ['HOME'] + "/.steam/steam/steamapps/sourcemods/")
 app_sourcemod_list = []
 
 for mod in prog_sourcemods:
-    app_sourcemod_list.append(Button(application, text=mod, image=ico_itemtest, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text))
+    app_sourcemod_list.append(Button(application_s, text=mod, image=ico_itemtest, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text))
 
 # Game picker and settings menu
 
@@ -170,6 +178,8 @@ for button in app_sourcemod_list:
     button.pack(fill=BOTH, padx=0, pady=0, ipadx=0, ipady=0)
 
 # The end.
+
+application_s.update()
 
 # center_window(root)
 
