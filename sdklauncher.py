@@ -29,7 +29,7 @@ class Scrollable(Frame):
         scrollbar = Scrollbar(frame, width=width, troughcolor=pal_lite, bg=pal_lite, activebackground=pal_lite)
         scrollbar.pack(side=RIGHT, fill=Y, expand=False)
 
-        self.canvas = Canvas(frame, yscrollcommand=scrollbar.set, relief=SUNKEN, bd=0, bg="red", highlightthickness=0)
+        self.canvas = Canvas(frame, yscrollcommand=scrollbar.set, relief=SUNKEN, bd=0, bg=pal_dark, highlightthickness=0)
         self.canvas.pack(side=LEFT, fill=BOTH, expand=True, pady=0, ipady=0)
 
         scrollbar.config(command=self.canvas.yview)
@@ -61,7 +61,7 @@ class Scrollable(Frame):
 root = Tk()
 # root.wm_attributes('-type', 'splash')
 # buffer_root_geometry = root.geometry()
-root.wm_overrideredirect(True) # I'll add a custom titlebar, eventually...
+# root.wm_overrideredirect(True) # This works, but it glitches absolutely everything on-screen.
 # root.geometry(buffer_root_geometry)
 
 image_close = PhotoImage(file = "./img/cls.png")
