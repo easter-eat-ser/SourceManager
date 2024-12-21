@@ -67,10 +67,11 @@ root.configure(bg=pal_lite, relief=RAISED, bd=1)
 titlebar = Frame(root, bg=pal_lite)
 titlebar.bind('<B1-Motion>', move_window)
 titlebar.bind('<Button-1>', get_pos)
+
 application = Frame(root, bg=pal_dark, relief=SUNKEN, bd=1)
 
 # Titlebar definitions
-titlebar_label = Label(titlebar, text="     Source SDK Linux", bg=pal_lite, fg=pal_text, font=("Tahoma", 10), justify="left")
+titlebar_label = Label(titlebar, text="     Source SDK Launcher", bg=pal_lite, fg=pal_text, font=("Tahoma", 10), justify="left")
 # titlebar_close_fm = Frame(titlebar, width=18, height=18, relief=RAISED, bd=1, bg=pal_lite)
 titlebar_mini = Button(titlebar, width = 14, height = 14, image = image_mini, bd=1, highlightthickness=0, takefocus=False, relief=RAISED, bg=pal_lite, activebackground=pal_lite)
 titlebar_close = Button(titlebar, width = 14, height = 14, image = image_close, bd=1, highlightthickness=0, takefocus=False, relief=RAISED, bg=pal_lite, activebackground=pal_lite)
@@ -82,11 +83,29 @@ application_s_apps = Frame(application, bg = pal_hovr)
 
 app_hammer = Button(application, text="Hammer Editor", image=ico_hammer, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
 app_model = Button(application, text="Model Viewer", image=ico_model, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
+app_facer = Button(application, text="Face Poser", image=ico_face, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text)
+
+application_m_mods = Label(application, text="sᴏᴜʀᴄᴇᴍᴏᴅs", bg=pal_dark, fg=pal_stxt, font=("Tahoma", 10), anchor="w")
+
+application_s_mods = Frame(application, bg = pal_hovr)
+
+prog_sourcemods = os.listdir(os.environ['HOME'] + "/.steam/debian-installation/steamapps/sourcemods/")
+app_sourcemod_list = []
+
+for mod in prog_sourcemods:
+    app_sourcemod_list.append(Button(application, text=mod, image=ico_itemtest, compound="left", height=10, bg=pal_dark, fg=pal_text, font=("Tahoma", 10), anchor="w", bd=0, highlightthickness=0, activebackground=pal_hovy, activeforeground=pal_text))
+
+# Game picker and settings menu
+
+menu = Frame(root, bg=pal_lite)
 
 # ---------------------------------------------
 
 titlebar.grid(row=0, column=0, sticky=EW, padx=7, pady=5, ipadx=0)
+
 application.grid(row=1, column=0, sticky=NSEW, padx=7, pady=0, ipadx=5, ipady=5)
+
+menu.grid(row=2, column=0, sticky=NSEW, padx=7, pady=0, ipadx=0, ipady=10)
 
 root.grid_rowconfigure(1, weight=1)
 root.grid_columnconfigure(0, weight=1)
@@ -105,6 +124,14 @@ application_s_apps.pack(fill=BOTH, padx=8)
 
 app_hammer.pack(fill=BOTH, padx=0, pady=0, ipadx=0, ipady=0)
 app_model.pack(fill=BOTH, padx=0, pady=0, ipadx=0, ipady=0)
+app_facer.pack(fill=BOTH, padx=0, pady=0, ipadx=0, ipady=0)
+
+application_m_mods.pack(fill=BOTH, padx=24, pady=2)
+
+application_s_mods.pack(fill=BOTH, padx=8)
+
+for button in app_sourcemod_list:
+    button.pack(fill=BOTH, padx=0, pady=0, ipadx=0, ipady=0)
 
 # The end.
 
