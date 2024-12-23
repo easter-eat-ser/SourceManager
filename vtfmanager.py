@@ -16,7 +16,7 @@ except:
 
 
 root = Tk()
-
+root.title("Source compilation manager")
 root.geometry("640x1080")
 
 if ttkthemes:
@@ -24,11 +24,11 @@ if ttkthemes:
     style.theme_use("arc")
 else:
     style = Style()
-    print("Install ttkthemes package for optional theming")
+    print("Install ttkthemes package for optional theming!")
 
 style.configure('TFrame')
 
-style.configure('Border.TFrame', borderwidth=1)
+style.configure('Border.TFrame', borderwidth=0)
 
 def int_is_not_power(n):
     return not ((n != 0) and (n & (n-1) == 0))
@@ -41,8 +41,12 @@ def png_to_vtf(path_png, path_vtf):
     if (int_is_not_power(file_png.size[0]) or int_is_not_power(file_png.size[1])):
         return 1
 
-    file_vtf = srctools.VTF(file_png.size[0], file_png.size[1], version=(7,2))
-    file_vtf.get().copy_from(file_png.tobytes())
+    file_vtf = srctools.VTF(file_png.size[0], file_png.size[1], version=(7,2), fmt=srctools.vtf.ImageFormats.DXT1)
+
+    if (file_png.mode == "RGBA"):
+        file_vtf.get().copy_from(file_png.tobytes(), srctools.vtf.ImageFormats.RGBA8888)
+    else:
+        file_vtf.get().copy_from(file_png.tobytes(), srctools.vtf.ImageFormats.RGB888)
     file_vtf.save(open(path_vtf, "wb"))
     return 0
 
@@ -102,7 +106,6 @@ container_convert.pack(fill=X, padx=8, pady=8, side=BOTTOM)
 #container_treeview.insert('charles', 'end', "chars", text='Item 432')
 
 def treeview_update(*args):
-    print("Update treeview")
     treeview_append_filesystem(container_treeview, path_entry.getvar("texture_path"))
 
 def info_panel_update(event):
