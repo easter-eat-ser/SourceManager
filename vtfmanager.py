@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+######### from idlelib.configdialog import VerticalScrolledFrame <-- when did this suddenly appeaR???
 from time import sleep
 from tkinter import *
 from tkinter.ttk import *
@@ -40,7 +41,7 @@ def png_to_vtf(path_png, path_vtf):
     if (int_is_not_power(file_png.size[0]) or int_is_not_power(file_png.size[1])):
         return 1
 
-    file_vtf = srctools.VTF(file_png.size[0], file_png.size[1])
+    file_vtf = srctools.VTF(file_png.size[0], file_png.size[1], version=(7,2))
     file_vtf.get().copy_from(file_png.tobytes())
     file_vtf.save(open(path_vtf, "wb"))
     return 0
@@ -50,12 +51,12 @@ def treeview_append_filesystem(tree, directory):
     # tree.insert("Location", "end", "Identifier", text="Folder name") Example
     for root, dirs, files in sorted(os.walk(directory)):
         if (os.path.basename(root) != ""):
-            tree.insert(os.path.dirname(root)[len(os.path.dirname(directory)):], "end", (root)[len(os.path.dirname(directory)):], text=os.path.basename(root))
+            tree.insert(os.path.dirname(root)[len(os.path.dirname(directory)):], "end", (root)[len(os.path.dirname(directory)):], text=os.path.basename(root), values=(root))
         for file in sorted(files):
             if ((root)[len(os.path.dirname(directory)):] == "/"):
                 tree.insert("", "end", text=file)
             else:
-                tree.insert((root)[len(os.path.dirname(directory)):], "end", text=file)
+                tree.insert((root)[len(os.path.dirname(directory)):], "end", text=file, values=((root + os.path.sep + file)))
 
 
 
@@ -111,7 +112,7 @@ def info_panel_update(event):
         container_filename.configure(text=item)
         extension = item.split(".")[-1].lower()
         filetype = "Unknown"
-        if (extension.lower() == item.lower()):
+        if (tree.selection()[0][:1] != "I"):
             filetype = ""
         else:
             match extension:
@@ -174,8 +175,15 @@ def info_panel_update(event):
         pass
 
 def compile_selected():
-    path = container_treeview
-    print(path)
+    tree = container_treeview
+    path = " ".join(tree.item(tree.selection()[0], "values"))
+    for root,dirs,files in os.walk(path):
+        for file in files:
+            filepath = root + os.path.sep + file
+            filepsp, fileext = os.path.splitext(filepath)
+            if (file.split(".")[-1] == "png"):
+                png_to_vtf(filepath, filepsp + ".vtf")
+
 
 treeview_update()
 path_select.configure(command=treeview_update)
